@@ -1,0 +1,28 @@
+<!--
+a &lt; b
+Monads &amp; Haskell's bind operator (&gt;&gt;=) explained
+
+  <strong>Success</strong>
+-->
+
+  <html>
+  <head>
+    <title>Monads &amp; Haskell's bind operator (&gt;&gt;=) explained</title>
+  </head>
+  <body>
+    <h1>Monads &amp; Haskell's bind operator (&gt;&gt;=) explained</h1>
+    <p>
+    Monads are one of the most confusing features to Haskell programmers.
+    The explanations are often enticing and mysterious;
+    You may hear them referred to as "programmable semicolons".
+    </p>
+    <img src='https://miro.medium.com/max/1276/0*WXYsA_WrYTAaQMRH' />
+    <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQGzuWGvxSE765ShzCZGO5ek6tPot6CgT6NcRAMrmysyboBCT60' />
+    <p>
+    They are an interesting design pattern.
+    For a good explanation, you can read <a href='http://learnyouahaskell.com/a-fistful-of-monads'>&lt;em&gt;Learn You a Haskell for Great Good!&lt;/em&gt;</a>.
+    </p>
+    <p>
+    </p>
+  </body>
+  </html>

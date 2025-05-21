@@ -1,0 +1,8 @@
+This question implements a text-based display area.  Set coordinates in the display are marked with 'X'.  Unset coordinates are marked with ".".
+
+Implement the 'update' and 'run' methods in graph.js.  Details of how to implement these methods are given by comments in the file.
+
+To test the update method, run `node graph_test1.js` and verify your results match graph_test1.output exactly.  Likewise, run `node graph_test2.js` and verify that your results match graph_test2.output.
+
+Finally, run `node graph_test3.js` to test out the run method.  Due to the random nature, you will get different results on each run.  (This simulation is somewhat famous, so you might recognize it).
+

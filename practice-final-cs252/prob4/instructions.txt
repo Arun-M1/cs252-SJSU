@@ -1,0 +1,14 @@
+This question covers blocks and method_missing in Ruby.
+
+The file node.rb contains a Node class, representing a node on an undirected graph.  Each node contains a key and a value.  The key is a symbol, and the value can be whatever the user desires.
+
+First, implement an `each` method.  This method takes an optional 'visited' list, used to avoid backtracking, and a block.  The block of code should be called, passing in the node's key and value.  After that, the each method should be called for every connected, unvisited node.
+
+Next, update an 'update_each' method.  It works similarly to update, except that only the value should be passed in to the block, and that the result of the block should replace the current value of the node.
+
+(Note that the 'find' method in this class might offer useful tips for the previous two methods.)
+
+Finally, implement method_missing.  An unrecognized method name will cause the node to call find to search the graph for a connected node with a key that matches the method name.
+
+The expected result is given in output_expected.txt.
+

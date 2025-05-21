@@ -1,0 +1,14 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "main": "contracts.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Arun Murugan",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "mocha": "^11.1.0"
+  }
+}

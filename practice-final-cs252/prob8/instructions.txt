@@ -1,0 +1,15 @@
+(Extra credit question: 5 points)
+
+This problem tests your understanding of borrows in Rust.
+
+Add the following two functions:
+
+1) The "find_second_largest" function should take in an array of i32s and return the second largest element.
+
+2) The "zero_out_pos" function should take in an array and an index.  The specified position of the array should be set to zero.
+
+Starter code is provided in extraCred.rs, but be forewarned that you must provide matching function calls to your function -- the code will not compile as-is.
+
+The expected output is given in expected_output.txt.
+
+

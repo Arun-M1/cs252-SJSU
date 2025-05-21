@@ -1,0 +1,12 @@
+This question covers regular expressions and singleton classes in Ruby.
+
+You must implement two methods as "static" method, to borrow Java terminology.
+
+First, implement the 'encode' method.  It takes a string, replaces '<', '>', and '&' with the appropriate HTML entities, and then returns the modified string.  (Comments in the code provide the HTML entities if you do not already know them).
+
+Second, implement a 'render' method to replace the place holders in the template string with the matching args.  So '$1' should be replaced with args[0], '$2' with args[1], '$3' with args[2], etc.  (Note the $ placeholders start with 1, while the args start with 0).
+
+The expected results are given in expected_output.txt.
+
+Note that the generated output will produce a valid HTML file.
+

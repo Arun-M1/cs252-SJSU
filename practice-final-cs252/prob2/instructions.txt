@@ -1,0 +1,19 @@
+For this problem, your job is to create an "addMixin" function.  It will add functionality to an object, similarly to how mixins work in Ruby.
+
+The function skeleton is at the top of mixin.js.  It takes in a target object (o) and another object with properties to be mixed in (mixin).
+
+You should return a Proxy object from this function.  Override the "get" trap so that:
+
+1) If the object already has a property, the object's property is returned.
+
+2) If the object does not have the property, it returns the property from the mixin object.
+
+3) If the property is "__original", it returns the original object "o".  (This design provides a way to "unmix" a mixin.)
+
+4) If none of the other cases hold, undefined should be returned as the result.
+
+
+You should not make any changes to this file outside of the addMixin function definition.
+
+The expected output of the program is given in output_expected.txt.
+

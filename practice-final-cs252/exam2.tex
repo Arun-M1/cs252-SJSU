@@ -1,0 +1,389 @@
+\documentclass[addpoints]{exam}
+
+\usepackage{listings}
+\usepackage{url}
+\usepackage{amsmath}
+
+% Code details
+\lstset{
+  language=Haskell,
+  tabsize = 4,
+  escapechar=@,
+  basicstyle=\ttfamily,
+  commentstyle=\tt,
+}
+
+% Header and footer details
+\pagestyle{headandfoot}
+\header{CS 252, Takehome Exam 2}{}{Name: \bigblank}
+%\headrule
+\footer{}{Page \thepage\ of \numpages}{}
+
+\setlength\answerskip{0ex}
+
+% Spacing and formatting, especially for blank lines.
+\newcommand{\code}[1]{{\tt #1}}
+\newcommand{\blank}{\makebox[1in]{\hrulefill}}
+\newcommand{\midblank}{\makebox[.7in]{\hrulefill}}
+\newcommand{\bigblank}{\makebox[2in]{\hrulefill}}
+\newcommand{\hugeblank}{\makebox[3in]{\hrulefill}}
+\newcommand{\ansline}{\hfill\makebox[1in][r]{\hrulefill}}
+\newcommand{\anslinelong}{\hfill\makebox[2in][r]{\hrulefill}}
+
+% Commands for formatting figure
+\newcommand{\mydefhead}[2]{\multicolumn{2}{l}{{#1}}&\mbox{\emph{#2}}\\}
+\newcommand{\mydefcase}[2]{\qquad\qquad\qquad\qquad\qquad\qquad& #1 &\mbox{#2}\\}
+
+\newcommand{\rel}[1]{ \mbox{\sc [#1]} }
+
+\newcommand{\sstep}[2]{{#1} \rightarrow {#2}}
+%\newcommand{\sstepStore}[4]{{#1},{#2} \rightarrow {#3},{#4}}
+%\newcommand{\bstep}[2]{{#1} \Downarrow {#2}}
+%\newcommand{\bstepStore}[4]{{#1},{#2} \Downarrow {#3},{#4}}
+\newcommand{\typeCheck}[2]{{#1} : {#2}}
+
+\newcommand{\ssrule}[3]{
+  \rel{#1} &
+  \frac{\strut\begin{array}{@{}c@{}} #2 \end{array}}
+       {\strut\begin{array}{@{}c@{}} #3 \end{array}}
+   \\~\\
+}
+
+\newcommand{\trule}[3]{
+  \rel{#1} &
+  \frac{\strut\begin{array}{@{}c@{}} #2 \end{array}}
+       {\strut\begin{array}{@{}c@{}} #3 \end{array}}
+   \\~\\
+}
+
+\begin{document}
+
+\hrule
+{\vskip .2in}
+\noindent
+This is a 24 hour, open notes, books, etc. exam. \\
+{\bf ASK} if anything is not clear. \\
+{\bf WORK INDIVIDUALLY. }\\
+
+\noindent
+If there are any corrections to exam questions, they will be posted to Canvas.
+
+{\vskip .2in}
+\hrule
+{\vskip .3in}
+
+\begin{center}
+\gradetable
+\end{center}
+
+%\section*{Notation:}
+%{\Large
+%\begin{tabular}{ll}
+%  $\sigma(x)$ -- Get reference $x$ from store $\sigma$. \\
+%  $\sigma[x:=v]$ -- Set reference $x$ to value $v$ in store $\sigma$. \\
+%  %$e[x\rightarrow v]$ -- Replace {\em variable} $x$ with value $v$ in expression $e$. \\
+%\end{tabular}
+%}
+
+\pagebreak
+
+
+\begin{questions}
+
+  \question[15]
+  Consider the following language.
+
+% Commands for language format
+\newcommand{\incexp}[1]{\mbox{\tt inc}~{#1}}
+\newcommand{\decexp}[1]{\mbox{\tt dec}~{#1}}
+\newcommand{\ifexp}[3]{\mbox{\tt if}~{#1}~{\tt then}~{#2}~{\tt else}~{#3}}
+\newcommand{\ttrue}{\mbox{\tt true}}
+\newcommand{\ffalse}{\mbox{\tt false}}
+
+\[
+  \begin{array}{ll@{\qquad\qquad\qquad}l}
+  \mydefhead{e ::=}{Expressions}
+    \mydefcase{v}{Value}
+    \mydefcase{\incexp{e}}{Increment operator}
+    \mydefcase{\decexp{e}}{Decrement operator}
+    \mydefcase{\ifexp{e}{e}{e}}{Conditional expressions}
+  \\
+    \mydefhead{v ::=\qquad\qquad\qquad\qquad}{Values}
+    \mydefcase{i}{Integers}
+    \mydefcase{\ttrue}{Boolean true}
+    \mydefcase{\ffalse}{Boolean false}
+  \\
+    \mydefhead{T ::=\qquad\qquad\qquad\qquad}{Types}
+    \mydefcase{Int}{Integer}
+    \mydefcase{Bool}{Boolean}
+\end{array}
+\]
+
+The small-step operational semantics relation
+$\large \sstep{e}{e'} $
+  repeatedly evaluates an expression to another expression
+until the expression is a value and cannot be evaluated further.
+
+\[
+  \begin{array}{r@{\qquad}c}
+
+    \ssrule{if-ctxt}{
+      \sstep{e_1}{e_1'} \\
+    }{
+      \sstep{\ifexp{e_1}{e_2}{e_3}}{\ifexp{e_1'}{e_2}{e_3}}
+    }
+
+    \ssrule{if-true}{
+    }{
+      \sstep{\ifexp{\ttrue}{e_1}{e_2}}{e_1}
+    }
+
+    \ssrule{if-false}{
+    }{
+      \sstep{\ifexp{\ffalse}{e_1}{e_2}}{e_2}
+    }
+
+    \ssrule{inc-ctx}{
+      \sstep{e}{e'} \\
+    }{
+      \sstep{\incexp{e}}{\incexp{e'}}
+    }
+
+    \ssrule{inc}{
+    }{
+      \sstep{\incexp{i}}{i+1}
+    }
+
+    \ssrule{dec-ctx}{
+      \sstep{e}{e'} \\
+    }{
+      \sstep{\decexp{e}}{\decexp{e'}}
+    }
+
+    \ssrule{dec}{
+    }{
+      \sstep{\decexp{i}}{i-1}
+    }
+
+  \end{array}
+\]
+
+(Question continues on the next page.)
+
+\eject
+The following type system for this language contains multiple errors.
+
+\[
+  \begin{array}{r@{\qquad}c}
+
+    \trule{t-int}{
+    }{
+      \typeCheck{i}{Int}
+    }
+
+    \trule{t-true}{
+    }{
+      \typeCheck{\ttrue}{Bool}
+    }
+
+    \trule{t-false}{
+    }{
+      \typeCheck{\ffalse}{Bool}
+    }
+
+    \trule{t-if}{
+      \typeCheck{e_1}{T_1} \quad
+      \typeCheck{e_2}{T_2} \quad
+      \typeCheck{e_3}{T_2}
+    }{
+      \typeCheck{\ifexp{e_1}{e_2}{e_3}}{T_2}
+    }
+
+    \trule{t-inc}{
+    }{
+      \typeCheck{\incexp{e}}{Int}
+    }
+
+    \trule{t-dec}{
+    }{
+      \typeCheck{\decexp{e}}{Int}
+    }
+
+  \end{array}
+\]
+
+\begin{parts}
+\part
+Write a sample program that highlights at least one error in the type system.
+\vskip 1in
+
+
+\part
+Modify the typing rules to correct all errors in the typing system.
+{\bf Be clear about which rules you are modifying.}
+\vskip 1.5in
+
+\part
+Now add additional evaluation rules that would make the original, unmodified typing rules correct.
+\vskip 1.5in
+
+\end{parts}
+
+Submit a PDF with your answers to these questions.
+
+\eject
+\question[15]
+For this problem, your job is to create an {\tt addMixin} function.
+It will add functionality to an object, similarly to how mixins work in Ruby.
+
+The {\tt mixin.js} file is included with the exam material.
+The function skeleton is at the top of {\tt mixin.js}.
+It takes in a target object (o) and another object with properties to be mixed in (mixin).
+
+You should return a Proxy object from this function.  Override the {\tt get} trap so that:
+\begin{itemize}
+  \item If the object already has a property, the object's property is returned.
+  \item If the object does not have the property, it returns the property from the mixin object.
+  \item If the property is {\tt \_\_original}, it returns the original object {\tt o}.
+    (This design provides a way to ``unmix'' a mixin.)
+  \item If none of the other cases hold, {\tt undefined} should be returned as the result.
+\end{itemize}
+
+
+You should not make any changes to this file outside of the {\tt addMixin} function definition.
+
+The expected output of the program is given in the file {\tt output\_expected.txt}.
+
+\vskip 1in
+
+\question[15]
+This question implements a text-based display area.
+Set coordinates in the display are marked with ``X''.
+Unset coordinates are marked with ``.''.
+
+Implement the {\tt update} and {\tt run} methods in {\tt graph.js} from the exam material.
+Details of how to implement these methods are given by comments in the file.
+
+To test the update method, run {\tt node graph\_test1.js} and verify your results match {\tt graph\_test1.output} exactly.
+Likewise, run {\tt node graph\_test2.js} and verify that your results match {\tt graph\_test2.output}.
+
+Finally, run {\tt node graph\_test3.js} to test out the run method.
+Due to the random nature, you will get different results on each run.
+(This simulation is somewhat famous, so you might recognize it).
+
+\vskip 1in
+
+\question[15]
+This question covers blocks and {\tt method\_missing} in Ruby.
+
+The file {\tt node.rb} contains a {\tt Node} class, representing a node on an undirected graph.
+Each node contains a key and a value.  The key is a symbol, and the value can be whatever the user desires.
+
+First, implement an {\tt each} method.
+This method takes an optional {\tt visited} list, used to avoid backtracking, and a block.
+The block of code should be called, passing in the node's key and value.
+After that, the {\tt each} method should be called for every connected, unvisited node.
+
+Next, update an {\tt update\_each} method.
+It works similarly to update, except that only the value should be passed in to the block,
+and that the result of the block should replace the current value of the node.
+
+(Note that the {\tt find} method in this class might offer useful tips for the previous two methods.)
+
+Finally, implement {\tt method\_missing}.
+An unrecognized method name will cause the node to call {\tt find} to search the graph for a connected node
+with a key that matches the method name.
+
+The expected result is given in {\tt output\_expected.txt}.
+
+\eject
+\question[15]
+This question covers regular expressions and singleton classes in Ruby.
+
+In {\tt html-renderer.rb},  you must implement two methods as {\tt static} methods, to borrow Java terminology.
+
+First, implement the {\tt encode} method.  It takes a string, replaces `$<$', `$>$', and `$\&$' with the
+appropriate HTML entities, and then returns the modified string.  (Comments in the code provide the
+HTML entities if you do not already know them).
+
+Second, implement a {\tt render} method to replace the place holders in the template string with the matching args.
+So `\$1' should be replaced with {\tt args[0]}, `\$2' with {\tt args[1]}, `\$3' with {\tt args[2]}, etc.
+(Note the \$ placeholders start with 1, while the {\tt args} start with 0).
+
+The expected results are given in {\tt expected\_output.txt}.
+
+Note that the generated output will produce a valid HTML file.
+
+\vskip 1in
+
+\question[15]
+This problem reviews the lambda calculus.
+
+In this class, we have seen the difference between lazy evaluation (as in Haskell)
+and eager evaluation (as in most other programming languages).
+
+Provide {\em two sets} of evaluation rules for the lambda calculus.
+This first should follow an eager evaluation strategy,
+and the second should instead use a lazy evaluation strategy.
+Name your rules so that it is clear which set of rules uses which evaluation strategy.
+
+You may use either big-step or small-step operational semantics for this problem,
+but use the same style for both sets of rules.
+
+For reference, the language of the lambda calculus is given below.
+
+% Commands for language format
+\newcommand{\lamexp}[2]{(\lambda{#1}.{#2})}
+\newcommand{\varexp}[1]{#1}
+\newcommand{\appexp}[2]{#1~#2}
+
+\[
+  \begin{array}{ll@{\qquad\qquad\qquad}l}
+  \mydefhead{e ::=}{Expressions}
+    \mydefcase{\lamexp{x}{e}}{Lambda function}
+    \mydefcase{\varexp{x}}{Variable}
+    \mydefcase{\appexp{e}{e}}{Funciton applicaiton}
+  \\
+    \mydefhead{v ::=\qquad\qquad\qquad\qquad}{Values}
+    \mydefcase{\lamexp{x}{e}}{Lambda function}
+\end{array}
+\]
+
+\vskip 1in
+
+\question[10]
+When submitting your exam, include a text file with the following text:
+
+\begin{quote}
+  I have not worked with anyone else for these exam problems.
+  I have not consulted with any outside parties.  For any code
+  that I have used from an external source, I have cited the
+  original source within my code comments.
+\end{quote}
+
+\vskip 1in
+
+\question[0]
+(Extra credit question: 5 points)
+
+This problem tests your understanding of borrows in Rust.
+
+Add the following two functions:
+
+\begin{enumerate}
+  \item The {\tt find\_second\_largest} function should take in an array of i32s and return the second largest element.
+
+  \item The {\tt zero\_out\_pos} function should take in an array and an index.  The specified position of the array should be set to zero.
+\end{enumerate}
+
+Starter code is provided in {\tt extraCred.rs}, but be forewarned that you must provide matching function calls to your function -- the code will not compile as-is.
+
+The expected output is given in {\tt expected\_output.txt}.
+
+
+
+
+
+\end{questions}
+\end{document}
+
